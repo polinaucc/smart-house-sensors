@@ -30,4 +30,12 @@ public class DeviceRoomService {
         deviceRoom.setOnTime(LocalTime.now());
         return deviceRoomRepository.save(deviceRoom);
     }
+
+    public DeviceRoom offDevice(Long deviceRoomId) {
+        DeviceRoom deviceRoom = deviceRoomRepository.findById(deviceRoomId)
+                .orElseThrow(() -> new IllegalArgumentException("No such device"));
+        deviceRoom.setState(State.OFF);
+        deviceRoom.setOffTime(LocalTime.now());
+        return deviceRoomRepository.save(deviceRoom);
+    }
 }

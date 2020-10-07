@@ -28,4 +28,11 @@ public class SensorController {
         if (deviceRoomService.onDevice(deviceRoomId) != null) return true;
         else return false;
     }
+
+    @ResponseBody
+    @GetMapping("/off-device/{device-room-id}")
+    public Boolean offDevice(@PathVariable("device-room-id") Long deviceRoomId) {
+        if (deviceRoomService.offDevice(deviceRoomId) != null) return true;
+        else return false;
+    }
 }
