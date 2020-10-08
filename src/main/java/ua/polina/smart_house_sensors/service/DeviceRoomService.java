@@ -12,11 +12,26 @@ import ua.polina.smart_house_sensors.repository.DeviceRoomRepository;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * The Device room service.
+ */
 @Service
 public class DeviceRoomService {
+    /**
+     * The Device room repository.
+     */
     DeviceRoomRepository deviceRoomRepository;
+    /**
+     * The Device parameter repository.
+     */
     DeviceParameterRepository deviceParameterRepository;
 
+    /**
+     * Instantiates a new Device room service.
+     *
+     * @param deviceRoomRepository      the device room repository
+     * @param deviceParameterRepository the device parameter repository
+     */
     @Autowired
     public DeviceRoomService(DeviceRoomRepository deviceRoomRepository,
                              DeviceParameterRepository deviceParameterRepository) {
@@ -24,10 +39,15 @@ public class DeviceRoomService {
         this.deviceParameterRepository = deviceParameterRepository;
     }
 
-    public List<DeviceRoom> getAll() {
-        return deviceRoomRepository.findAll();
-    }
-
+    /**
+     * Turns on device in the room.
+     *
+     * @param deviceRoomId the device room id
+     * @return the device room
+     * @throws IllegalArgumentException if there is no device room with such id
+     * @throws NoParameterException     if the device has no parameters to be
+     *                                  on with
+     */
     public DeviceRoom onDevice(Long deviceRoomId) throws NoParameterException {
         DeviceRoom deviceRoom = deviceRoomRepository.findById(deviceRoomId)
                 .orElseThrow(() -> new IllegalArgumentException("No such device"));
@@ -46,6 +66,14 @@ public class DeviceRoomService {
         }
     }
 
+    /**
+     * Turns off the device in the room.
+     *
+     * @param deviceRoomId the device room id
+     * @return the device room
+     * @throws IllegalArgumentException if deviceRoom with such id doesn't
+     *                                  exist.
+     */
     public DeviceRoom offDevice(Long deviceRoomId) {
         DeviceRoom deviceRoom = deviceRoomRepository.findById(deviceRoomId)
                 .orElseThrow(() -> new IllegalArgumentException("No such device"));
