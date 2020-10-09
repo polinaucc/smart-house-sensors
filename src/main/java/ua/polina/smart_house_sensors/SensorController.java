@@ -30,7 +30,7 @@ public class SensorController {
     /**
      * The room parameter service.
      */
-    RoomParameterService  roomParameterService;
+    RoomParameterService roomParameterService;
 
     /**
      * Instantiates a new Sensor controller.
@@ -86,24 +86,29 @@ public class SensorController {
      */
     @ResponseBody
     @PostMapping("/set-up-parameter-value")
-    public DeviceParameter setUpParameterValue(@RequestBody SetUpParameterDto setUpParameterDto){
+    public DeviceParameter setUpParameterValue(@RequestBody SetUpParameterDto setUpParameterDto) {
         try {
             return deviceParameterService.setUpParameterValue(setUpParameterDto);
-        }
-        catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return null;
         }
     }
 
     @ResponseBody
     @PostMapping("set-up-room-parameters")
-    public void setUpRoomParameters(@RequestBody RoomParametersApi roomParametersApi){
+    public void setUpRoomParameters(@RequestBody RoomParametersApi roomParametersApi) {
         roomParameterService.save(roomParametersApi);
     }
 
     @ResponseBody
     @GetMapping("simulate-fire/{room-id}")
-    public void simulateFire(@PathVariable("room-id") Long roomId){
+    public void simulateFire(@PathVariable("room-id") Long roomId) {
         roomParameterService.fire(roomId);
+    }
+
+    @ResponseBody
+    @GetMapping("/check")
+    public String fire() {
+        return roomParameterService.checkForEmergency();
     }
 }

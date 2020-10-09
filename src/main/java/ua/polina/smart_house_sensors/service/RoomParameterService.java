@@ -9,6 +9,8 @@ import ua.polina.smart_house_sensors.entity.RoomParameter;
 import ua.polina.smart_house_sensors.repository.RoomParameterRepository;
 import ua.polina.smart_house_sensors.repository.RoomRepository;
 
+import java.util.List;
+
 @Service
 public class RoomParameterService {
     RoomParameterRepository roomParameterRepository;
@@ -52,5 +54,15 @@ public class RoomParameterService {
                         50.0, 10.0, 90.0, 0.0))
                 .build();
         return save(roomParametersApi);
+    }
+
+    public String checkForEmergency(){
+        List<RoomParameter> roomParameters = roomParameterRepository.findAll();
+        for (RoomParameter rp: roomParameters) {
+            if(rp.getSmokeLevel()>=85){
+                return "FIRE in " + rp.getRoom().getName();
+            }
+        }
+        return "";
     }
 }
