@@ -97,33 +97,59 @@ public class SensorController {
         }
     }
 
+    /**
+     * Sets up room parameters.
+     *
+     * @param roomParametersApi
+     */
     @ResponseBody
     @PostMapping("set-up-room-parameters")
     public void setUpRoomParameters(@RequestBody RoomParametersApi roomParametersApi) {
         roomParameterService.save(roomParametersApi);
     }
 
+    /**
+     * Simulates the fire. Sets up room parameters` values when fire.
+     *
+     * @param roomId the room id
+     */
     @ResponseBody
     @GetMapping("simulate-fire/{room-id}")
     public void simulateFire(@PathVariable("room-id") Long roomId) {
         roomParameterService.fire(roomId);
     }
 
+    /**
+     * Simulates the flood. Sets up room parameters` values when flood.
+     *
+     * @param roomId the room id
+     */
     @ResponseBody
     @GetMapping("simulate-flood/{room-id}")
     public void simulateFlood(@PathVariable("room-id") Long roomId) {
         roomParameterService.flood(roomId);
     }
-
+    /**
+     * Simulates the open window. Sets up room parameters` values when open
+     * window.
+     *
+     * @param roomId the room id
+     */
     @ResponseBody
     @GetMapping("simulate-open-window/{room-id}")
     public void simulateOpenWindow(@PathVariable("room-id") Long roomId) {
-        roomParameterService.flood(roomId);
+        roomParameterService.openWindow(roomId);
     }
 
+    //TODO: filter rooms by the house.
+    /**
+     * Check rooms for emergencies.
+     *
+     * @return
+     */
     @ResponseBody
     @GetMapping("/check")
-    public MessageList fire() {
+    public MessageList checkForEmergencies() {
         return new MessageList(roomParameterService.checkForEmergency());
     }
 }

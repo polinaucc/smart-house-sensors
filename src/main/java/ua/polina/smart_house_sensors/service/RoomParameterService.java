@@ -12,11 +12,26 @@ import ua.polina.smart_house_sensors.repository.RoomRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Room parameter service.
+ */
 @Service
 public class RoomParameterService {
+    /**
+     * The Room parameter repository.
+     */
     RoomParameterRepository roomParameterRepository;
+    /**
+     * The Room repository.
+     */
     RoomRepository roomRepository;
 
+    /**
+     * Instantiates a new Room parameter service.
+     *
+     * @param roomParameterRepository the room parameter repository
+     * @param roomRepository          the room repository
+     */
     @Autowired
     public RoomParameterService(RoomParameterRepository roomParameterRepository,
                                 RoomRepository roomRepository) {
@@ -24,6 +39,12 @@ public class RoomParameterService {
         this.roomRepository = roomRepository;
     }
 
+    /**
+     * Saves room parameter if it doesn't exist, or updates it.
+     *
+     * @param roomParametersApi the room parameters api
+     * @return the room parameter
+     */
     public RoomParameter save(RoomParametersApi roomParametersApi) {
         RoomParameter roomParameter = new RoomParameter();
         if (roomParameterRepository.findByRoom(roomParametersApi.getRoom()).isEmpty()) {
@@ -46,6 +67,12 @@ public class RoomParameterService {
         return roomParameterRepository.save(roomParameter);
     }
 
+    /**
+     * Sets up the values of rooms` parameters when fire.
+     *
+     * @param roomId the room id
+     * @return the room parameter
+     */
     public RoomParameter fire(Long roomId) {
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("No room with such id"));
@@ -57,6 +84,12 @@ public class RoomParameterService {
         return save(roomParametersApi);
     }
 
+    /**
+     * Sets up the values of rooms` parameters when flood.
+     *
+     * @param roomId the room id
+     * @return the room parameter
+     */
     public RoomParameter flood(Long roomId) {
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("No room with such id"));
@@ -68,6 +101,12 @@ public class RoomParameterService {
         return save(roomParametersApi);
     }
 
+    /**
+     * Sets up the values of rooms` parameters when open window.
+     *
+     * @param roomId the room id
+     * @return the room parameter
+     */
     public RoomParameter openWindow(Long roomId) {
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("No room with such id"));
@@ -79,6 +118,11 @@ public class RoomParameterService {
         return save(roomParametersApi);
     }
 
+    /**
+     * Checks for emergencies and generate messages about them.
+     *
+     * @return the list of messages
+     */
     public List<String> checkForEmergency() {
         List<String> messages = new ArrayList<>();
         List<RoomParameter> roomParameters = roomParameterRepository.findAll();

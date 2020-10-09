@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Dto for setting up device parameter.
+ * Dto for setting up device parameter by admin.
  */
 @Data
 @AllArgsConstructor

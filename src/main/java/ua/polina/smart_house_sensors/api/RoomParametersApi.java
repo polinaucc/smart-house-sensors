@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ua.polina.smart_house_sensors.entity.Room;
 
+/**
+ * The type Room parameters api to send room parameters and room.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
