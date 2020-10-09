@@ -2,18 +2,23 @@ package ua.polina.smart_house_sensors.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ua.polina.smart_house_sensors.api.RoomParameterDto;
 import ua.polina.smart_house_sensors.api.RoomParametersApi;
 import ua.polina.smart_house_sensors.entity.Room;
 import ua.polina.smart_house_sensors.entity.RoomParameter;
 import ua.polina.smart_house_sensors.repository.RoomParameterRepository;
+import ua.polina.smart_house_sensors.repository.RoomRepository;
 
 @Service
 public class RoomParameterService {
     RoomParameterRepository roomParameterRepository;
+    RoomRepository roomRepository;
 
     @Autowired
-    public RoomParameterService(RoomParameterRepository roomParameterRepository) {
+    public RoomParameterService(RoomParameterRepository roomParameterRepository,
+                                RoomRepository roomRepository) {
         this.roomParameterRepository = roomParameterRepository;
+        this.roomRepository = roomRepository;
     }
 
     public RoomParameter save(RoomParametersApi roomParametersApi) {
@@ -36,5 +41,16 @@ public class RoomParameterService {
             roomParameter.setWaterLevel(roomParametersApi.getRoomParameterDto().getWaterLevel());
         }
         return roomParameterRepository.save(roomParameter);
+    }
+
+    public RoomParameter fire(Long roomId) {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("No room with such id"));
+        RoomParametersApi roomParametersApi = RoomParametersApi.builder()
+                .room(room)
+                .roomParameterDto(new RoomParameterDto(
+                        50.0, 10.0, 90.0, 0.0))
+                .build();
+        return save(roomParametersApi);
     }
 }

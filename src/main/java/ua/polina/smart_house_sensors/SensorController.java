@@ -100,4 +100,10 @@ public class SensorController {
     public void setUpRoomParameters(@RequestBody RoomParametersApi roomParametersApi){
         roomParameterService.save(roomParametersApi);
     }
+
+    @ResponseBody
+    @GetMapping("simulate-fire/{room-id}")
+    public void simulateFire(@PathVariable("room-id") Long roomId){
+        roomParameterService.fire(roomId);
+    }
 }
