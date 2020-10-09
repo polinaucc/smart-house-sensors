@@ -17,14 +17,24 @@ public class RoomParameterService {
     }
 
     public RoomParameter save(RoomParametersApi roomParametersApi) {
-        RoomParameter roomParameter = RoomParameter.builder()
-                .room(roomParametersApi.getRoom())
-                .temperature(roomParametersApi.getRoomParameterDto().getTemperature())
-                .humidity(roomParametersApi.getRoomParameterDto().getHumidity())
-                .smokeLevel(roomParametersApi.getRoomParameterDto().getSmokeLevel())
-                .waterLevel(roomParametersApi.getRoomParameterDto().getWaterLevel())
-                .build();
-
+        RoomParameter roomParameter = new RoomParameter();
+        if (roomParameterRepository.findByRoom(roomParametersApi.getRoom()).isEmpty()) {
+            roomParameter = RoomParameter.builder()
+                    .room(roomParametersApi.getRoom())
+                    .temperature(roomParametersApi.getRoomParameterDto().getTemperature())
+                    .humidity(roomParametersApi.getRoomParameterDto().getHumidity())
+                    .smokeLevel(roomParametersApi.getRoomParameterDto().getSmokeLevel())
+                    .waterLevel(roomParametersApi.getRoomParameterDto().getWaterLevel())
+                    .build();
+        } else {
+            roomParameter = roomParameterRepository
+                    .findByRoom(roomParametersApi.getRoom())
+                    .get();
+            roomParameter.setTemperature(roomParametersApi.getRoomParameterDto().getTemperature());
+            roomParameter.setHumidity(roomParametersApi.getRoomParameterDto().getHumidity());
+            roomParameter.setSmokeLevel(roomParametersApi.getRoomParameterDto().getSmokeLevel());
+            roomParameter.setWaterLevel(roomParametersApi.getRoomParameterDto().getWaterLevel());
+        }
         return roomParameterRepository.save(roomParameter);
     }
 }
