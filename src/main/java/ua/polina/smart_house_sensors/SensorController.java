@@ -3,6 +3,7 @@ package ua.polina.smart_house_sensors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ua.polina.smart_house_sensors.api.MessageList;
 import ua.polina.smart_house_sensors.api.ResponseOnApi;
 import ua.polina.smart_house_sensors.api.RoomParametersApi;
 import ua.polina.smart_house_sensors.api.SetUpParameterDto;
@@ -11,6 +12,8 @@ import ua.polina.smart_house_sensors.exception.NoParameterException;
 import ua.polina.smart_house_sensors.service.DeviceParameterService;
 import ua.polina.smart_house_sensors.service.DeviceRoomService;
 import ua.polina.smart_house_sensors.service.RoomParameterService;
+
+import java.util.List;
 
 /**
  * The type Sensor controller.
@@ -107,8 +110,20 @@ public class SensorController {
     }
 
     @ResponseBody
+    @GetMapping("simulate-flood/{room-id}")
+    public void simulateFlood(@PathVariable("room-id") Long roomId) {
+        roomParameterService.flood(roomId);
+    }
+
+    @ResponseBody
+    @GetMapping("simulate-open-window/{room-id}")
+    public void simulateOpenWindow(@PathVariable("room-id") Long roomId) {
+        roomParameterService.flood(roomId);
+    }
+
+    @ResponseBody
     @GetMapping("/check")
-    public String fire() {
-        return roomParameterService.checkForEmergency();
+    public MessageList fire() {
+        return new MessageList(roomParameterService.checkForEmergency());
     }
 }
