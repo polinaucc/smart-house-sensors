@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ua.polina.smart_house_sensors.api.ResponseOnApi;
+import ua.polina.smart_house_sensors.api.RoomParametersApi;
 import ua.polina.smart_house_sensors.api.SetUpParameterDto;
 import ua.polina.smart_house_sensors.entity.DeviceParameter;
 import ua.polina.smart_house_sensors.exception.NoParameterException;
 import ua.polina.smart_house_sensors.service.DeviceParameterService;
 import ua.polina.smart_house_sensors.service.DeviceRoomService;
+import ua.polina.smart_house_sensors.service.RoomParameterService;
 
 /**
  * The type Sensor controller.
@@ -26,6 +28,11 @@ public class SensorController {
     DeviceParameterService deviceParameterService;
 
     /**
+     * The room parameter service.
+     */
+    RoomParameterService  roomParameterService;
+
+    /**
      * Instantiates a new Sensor controller.
      *
      * @param deviceRoomService      the device room service
@@ -33,9 +40,11 @@ public class SensorController {
      */
     @Autowired
     public SensorController(DeviceRoomService deviceRoomService,
-                            DeviceParameterService deviceParameterService) {
+                            DeviceParameterService deviceParameterService,
+                            RoomParameterService roomParameterService) {
         this.deviceRoomService = deviceRoomService;
         this.deviceParameterService = deviceParameterService;
+        this.roomParameterService = roomParameterService;
     }
 
     /**
@@ -84,5 +93,11 @@ public class SensorController {
         catch (IllegalArgumentException e){
             return null;
         }
+    }
+
+    @ResponseBody
+    @PostMapping("set-up-room-parameters")
+    public void setUpRoomParameters(@RequestBody RoomParametersApi roomParametersApi){
+        roomParameterService.save(roomParametersApi);
     }
 }

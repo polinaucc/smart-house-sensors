@@ -2,6 +2,8 @@ package ua.polina.smart_house_sensors.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import ua.polina.smart_house_sensors.api.SetUpParameterDto;
 import ua.polina.smart_house_sensors.entity.DeviceParameter;
 import ua.polina.smart_house_sensors.repository.DeviceParameterRepository;
@@ -46,4 +48,5 @@ public class DeviceParameterService {
         }
         return deviceParameterRepository.save(deviceParameter);
     }
+
 }
