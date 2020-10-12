@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.polina.smart_house_sensors.api.RoomParameterDto;
 import ua.polina.smart_house_sensors.api.RoomParametersApi;
+import ua.polina.smart_house_sensors.entity.House;
 import ua.polina.smart_house_sensors.entity.Room;
 import ua.polina.smart_house_sensors.entity.RoomParameter;
 import ua.polina.smart_house_sensors.repository.RoomParameterRepository;
@@ -119,13 +120,22 @@ public class RoomParameterService {
     }
 
     /**
-     * Checks for emergencies and generate messages about them.
+     * Checks for emergencies all rooms in the house and generates
+     * messages about them.
      *
      * @return the list of messages
      */
-    public List<String> checkForEmergency() {
+    public List<String> checkForEmergency(House house) {
+        List<RoomParameter> roomParameters = new ArrayList<>();
         List<String> messages = new ArrayList<>();
-        List<RoomParameter> roomParameters = roomParameterRepository.findAll();
+        List<Room> rooms = roomRepository.findByHouse(house);
+
+        for (Room r : rooms) {
+            if (roomParameterRepository.findByRoom(r).isPresent()) {
+                roomParameters.add(roomParameterRepository.findByRoom(r).get());
+            }
+        }
+
         for (RoomParameter rp : roomParameters) {
             if (rp.getSmokeLevel() >= 85 && rp.getTemperature() >= 40) {
                 messages.add("FIRE in " + rp.getRoom().getName());

@@ -26,7 +26,7 @@ public class House {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address", unique = true)
     private Address address;
 
@@ -36,10 +36,10 @@ public class House {
     @Column(name = "amount_of_rooms")
     private Integer amountOfRooms;
 
-    @OneToMany(mappedBy = "house")
+    @OneToMany(mappedBy = "house", cascade = CascadeType.ALL)
     private List<Room> rooms;
 
-    @OneToMany(mappedBy = "house")
+    @OneToMany(mappedBy = "house", cascade = CascadeType.ALL)
     private List<Resident> residents;
 
     @Override

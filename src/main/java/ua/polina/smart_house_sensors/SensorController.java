@@ -8,6 +8,7 @@ import ua.polina.smart_house_sensors.api.ResponseOnApi;
 import ua.polina.smart_house_sensors.api.RoomParametersApi;
 import ua.polina.smart_house_sensors.api.SetUpParameterDto;
 import ua.polina.smart_house_sensors.entity.DeviceParameter;
+import ua.polina.smart_house_sensors.entity.House;
 import ua.polina.smart_house_sensors.exception.NoParameterException;
 import ua.polina.smart_house_sensors.service.DeviceParameterService;
 import ua.polina.smart_house_sensors.service.DeviceRoomService;
@@ -148,8 +149,8 @@ public class SensorController {
      * @return
      */
     @ResponseBody
-    @GetMapping("/check")
-    public MessageList checkForEmergencies() {
-        return new MessageList(roomParameterService.checkForEmergency());
+    @PostMapping("/check")
+    public MessageList checkForEmergencies(@RequestBody House house) {
+        return new MessageList(roomParameterService.checkForEmergency(house));
     }
 }
