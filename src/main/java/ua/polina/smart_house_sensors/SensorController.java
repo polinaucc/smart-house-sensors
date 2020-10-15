@@ -1,7 +1,10 @@
 package ua.polina.smart_house_sensors;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import ua.polina.smart_house_sensors.api.MessageList;
 import ua.polina.smart_house_sensors.api.ResponseOnApi;
@@ -9,12 +12,11 @@ import ua.polina.smart_house_sensors.api.RoomParametersApi;
 import ua.polina.smart_house_sensors.api.SetUpParameterDto;
 import ua.polina.smart_house_sensors.entity.DeviceParameter;
 import ua.polina.smart_house_sensors.entity.House;
+import ua.polina.smart_house_sensors.entity.RoomParameter;
 import ua.polina.smart_house_sensors.exception.NoParameterException;
 import ua.polina.smart_house_sensors.service.DeviceParameterService;
 import ua.polina.smart_house_sensors.service.DeviceRoomService;
 import ua.polina.smart_house_sensors.service.RoomParameterService;
-
-import java.util.List;
 
 /**
  * The type Sensor controller.
@@ -22,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/sensor")
 public class SensorController {
+    private static final Logger LOGGER = LogManager.getLogger(SensorController.class);
     /**
      * The Device room service.
      */
@@ -130,6 +133,7 @@ public class SensorController {
     public void simulateFlood(@PathVariable("room-id") Long roomId) {
         roomParameterService.flood(roomId);
     }
+
     /**
      * Simulates the open window. Sets up room parameters` values when open
      * window.
@@ -143,6 +147,7 @@ public class SensorController {
     }
 
     //TODO: filter rooms by the house.
+
     /**
      * Check rooms for emergencies.
      *
@@ -151,6 +156,9 @@ public class SensorController {
     @ResponseBody
     @PostMapping("/check")
     public MessageList checkForEmergencies(@RequestBody House house) {
+        for (RoomParameter rp : roomParameterService.getRoomParametersByHouse(house)) {
+            LOGGER.info(rp);
+        }
         return new MessageList(roomParameterService.checkForEmergency(house));
     }
 }

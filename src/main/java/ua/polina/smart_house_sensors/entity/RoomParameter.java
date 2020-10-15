@@ -43,4 +43,16 @@ public class RoomParameter {
     @OneToOne
     @JoinColumn(name = "room_id", unique = true)
     private Room room;
+
+    @Override
+    public String toString() {
+        return "RoomParameter{" +
+                "temperature=" + temperature +
+                ", humidity=" + humidity +
+                ", smokeLevel=" + smokeLevel +
+                ", waterLevel=" + waterLevel +
+                ", room=" + room.getName() +
+                ", house=" + room.getHouse() +
+                '}';
+    }
 }

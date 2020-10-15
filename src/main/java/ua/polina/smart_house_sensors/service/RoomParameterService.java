@@ -126,15 +126,8 @@ public class RoomParameterService {
      * @return the list of messages
      */
     public List<String> checkForEmergency(House house) {
-        List<RoomParameter> roomParameters = new ArrayList<>();
         List<String> messages = new ArrayList<>();
-        List<Room> rooms = roomRepository.findByHouse(house);
-
-        for (Room r : rooms) {
-            if (roomParameterRepository.findByRoom(r).isPresent()) {
-                roomParameters.add(roomParameterRepository.findByRoom(r).get());
-            }
-        }
+        List<RoomParameter> roomParameters = getRoomParametersByHouse(house);
 
         for (RoomParameter rp : roomParameters) {
             if (rp.getSmokeLevel() >= 85 && rp.getTemperature() >= 40) {
@@ -146,5 +139,16 @@ public class RoomParameterService {
             }
         }
         return messages;
+    }
+
+    public List<RoomParameter> getRoomParametersByHouse(House house) {
+        List<RoomParameter> roomParameters = new ArrayList<>();
+        List<Room> rooms = roomRepository.findByHouse(house);
+        for (Room r : rooms) {
+            if (roomParameterRepository.findByRoom(r).isPresent()) {
+                roomParameters.add(roomParameterRepository.findByRoom(r).get());
+            }
+        }
+        return roomParameters;
     }
 }

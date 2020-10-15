@@ -1,0 +1,5 @@
+INFO    15.10.2020 14:26:10 - RoomParameter{temperature=50.0, humidity=10.0, smokeLevel=90.0, waterLevel=0.0, room=Кухня}
+INFO    15.10.2020 14:27:10 - RoomParameter{temperature=50.0, humidity=10.0, smokeLevel=90.0, waterLevel=0.0, room=Кухня}
+INFO    15.10.2020 14:28:10 - RoomParameter{temperature=50.0, humidity=10.0, smokeLevel=90.0, waterLevel=0.0, room=Кухня}
+INFO    15.10.2020 14:29:10 - RoomParameter{temperature=50.0, humidity=10.0, smokeLevel=90.0, waterLevel=0.0, room=Кухня, house=House{address=Украина Киев Лесна 17/5, size=142.2, amountOfRooms=5}}
+INFO    15.10.2020 14:30:10 - RoomParameter{temperature=50.0, humidity=10.0, smokeLevel=90.0, waterLevel=0.0, room=Кухня, house=House{address=Украина Киев Лесна 17/5, size=142.2, amountOfRooms=5}}
